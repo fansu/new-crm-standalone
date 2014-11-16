@@ -7,10 +7,15 @@
   <body>
     <div ng-controller="standaloneController">
       <h3 style="text-align:center">CRM system-Standalone App</h3>
-	<label>Method: <select ng-model="method_select" ng-options="method.name for method in methods"></select></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	 <label>REST API: <input type="text" ng-model="API_link" placeholder="REST API" /></label>		
-      <input type="button" ng-click="APITest(method_select, API_link)" value="Send"><br /><br />
-    <pre class='json' json='result' pretty-json />
+			<label>Method: <select ng-model="method_select" ng-change="methodChange(method_select)" ng-options="method.name for method in methods"></select></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label>REST API: <input type="text" ng-model="API_link" placeholder="REST API" /></label>		
+			<input type="button" ng-click="APITest(method_select, model_name, models, API_link)" value="Send"><br /><br />
+      <label>Model: <select ng-model="model_name" ng-change="modelChange(method_select, model_name)" ng-options="choice.name for choice in choices"></select></label><br /><br />
+      <div ng-repeat="model in models">
+        <label>&nbsp;&nbsp;&nbsp;&nbsp;Input data: {{model.attr}}<input type="{{ model.type }}" ng-model="model.data" placeholder="{{ model.attr }}" ></label>                        
+      </div>
+      {{ requests.data }}
+			<pre class='json' json='result' pretty-json />
     </div>
     <link rel="stylesheet" type="text/css" href="/js/ng-prettyjson.css">
   <script src="/js/angular.min.js"></script>
