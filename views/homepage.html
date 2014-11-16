@@ -15,10 +15,13 @@
         <label>&nbsp;&nbsp;&nbsp;&nbsp;Input data: {{model.attr}}<input type="{{ model.type }}" ng-model="model.data" placeholder="{{ model.attr }}" ></label>                        
       </div>
       {{ requests.data }}
+      {{ headers }}
 			<pre class='json' json='result' pretty-json />
     </div>
     <link rel="stylesheet" type="text/css" href="/js/ng-prettyjson.css">
   <script src="/js/angular.min.js"></script>
+  <script src="/js/angular-uuid2.js"></script>
+  <script src="/js/SHA1.js"></script>
   <script type="text/javascript" src="/js/ng-prettyjson.js"></script>
   <script src="/js/standalone.js"></script>
   </body>

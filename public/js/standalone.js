@@ -1,9 +1,10 @@
-angular.module('crmStandaloneApp', ['ngPrettyJson'])
+angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
   .config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
   }])
-  .controller('standaloneController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+  .controller('standaloneController', ['$scope', '$http', '$window', 'uuid2', function($scope, $http, $window, uuid2) {
+  var uuid = 0;
   $scope.methods = [
     {name: 'GET'},
     {name: 'POST'},
@@ -76,8 +77,16 @@ angular.module('crmStandaloneApp', ['ngPrettyJson'])
            $scope.error = error;
         });
     } else if (method.name == 'POST'){
+      if (uuid == 0) {
+        uuid = uuid2.newuuid();
+			}
       if (model_name.name == 'Agent') {
-        $http.post('http://' + API_link, {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data})
+        var post_data = {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data};
+        $http({
+            url: 'http://' + API_link, 
+            method: 'POST',
+            data: post_data,
+            headers: {'nonce' : SHA1(uuid + 'POST' + JSON.stringify(post_data) + API_link)}})
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -86,7 +95,12 @@ angular.module('crmStandaloneApp', ['ngPrettyJson'])
            $scope.error = error;
         });
       } else if (model_name.name == 'Customer') {
-        $http.post('http://' + API_link, {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data})
+        var post_data = {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data};
+        $http({
+            url: 'http://' + API_link, 
+            method: 'POST',
+            data: post_data,
+            headers: {'nonce' : SHA1(uuid + 'POST' + JSON.stringify(post_data) + API_link)}})
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -95,7 +109,12 @@ angular.module('crmStandaloneApp', ['ngPrettyJson'])
            $scope.error = error;
         });
       } else if (model_name.name == 'ContactHistory') {
-        $http.post('http://' + API_link, {textSummary: model_data[0].data, model: model_data[1].data, time: model_data[2].data, data: model_data[3].data})
+        var post_data = {textSummary: model_data[0].data, model: model_data[1].data, time: model_data[2].data, data: model_data[3].data};
+        $http({
+            url: 'http://' + API_link, 
+            method: 'POST',
+            data: post_data,
+            headers: {'nonce' : SHA1(uuid + 'POST' + JSON.stringify(post_data) + API_link)}})
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -105,8 +124,16 @@ angular.module('crmStandaloneApp', ['ngPrettyJson'])
         });
       }
     } else if (method.name == 'PUT'){
+      if (uuid == 0) {
+        uuid = uuid2.newuuid();
+			}
       if (model_name.name == 'Agent') {
-        $http.put('http://' + API_link, {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data})
+        var post_data = {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data};
+        $http({
+            url: 'http://' + API_link, 
+            method: 'PUT',
+            data: post_data,
+            headers: {'nonce' : SHA1(uuid + 'PUT' + JSON.stringify(post_data) + API_link)}})
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -115,7 +142,12 @@ angular.module('crmStandaloneApp', ['ngPrettyJson'])
            $scope.error = error;
         });
       } else if (model_name.name == 'Customer') {
-        $http.put('http://' + API_link, {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data})
+        var post_data = {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data};
+        $http({
+            url: 'http://' + API_link, 
+            method: 'PUT',
+            data: post_data,
+            headers: {'nonce' : SHA1(uuid + 'PUT' + JSON.stringify(post_data) + API_link)}})
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -125,7 +157,14 @@ angular.module('crmStandaloneApp', ['ngPrettyJson'])
         });
       }
     } else if (method.name == 'DELETE'){
-      $http.delete('http://' + API_link)
+      if (uuid == 0) {
+        uuid = uuid2.newuuid();
+			}
+        $http({
+            url: 'http://' + API_link, 
+            method: 'DELETE',
+            data: post_data,
+            headers: {'nonce' : SHA1(uuid + 'DELETE' + API_link)}})
 				.success(function(data, status, headers, config) {
           $scope.result = data;
           $scope.method = method;
