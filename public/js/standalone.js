@@ -1,10 +1,9 @@
-angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
+angular.module('crmStandaloneApp', ['ngPrettyJson'])
   .config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
   }])
-  .controller('standaloneController', ['$scope', '$http', '$window', 'uuid2', function($scope, $http, $window, uuid2) {
-  var uuid = 0;
+  .controller('standaloneController', ['$scope', '$http', '$window', function($scope, $http, $window) {
   $scope.methods = [
     {name: 'GET'},
     {name: 'POST'},
@@ -77,16 +76,13 @@ angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
            $scope.error = error;
         });
     } else if (method.name == 'POST'){
-      if (uuid == 0) {
-        uuid = uuid2.newuuid();
-			}
       if (model_name.name == 'Agent') {
         var post_data = {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data};
         $http({
             url: 'http://' + API_link, 
             method: 'POST',
-            data: post_data,
-            headers: {'nonce' : SHA1(uuid + 'POST' + JSON.stringify(post_data) + API_link)}})
+            data: post_data
+          })
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -99,8 +95,8 @@ angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
         $http({
             url: 'http://' + API_link, 
             method: 'POST',
-            data: post_data,
-            headers: {'nonce' : SHA1(uuid + 'POST' + JSON.stringify(post_data) + API_link)}})
+            data: post_data
+          })
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -113,8 +109,8 @@ angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
         $http({
             url: 'http://' + API_link, 
             method: 'POST',
-            data: post_data,
-            headers: {'nonce' : SHA1(uuid + 'POST' + JSON.stringify(post_data) + API_link)}})
+            data: post_data
+          })
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -124,16 +120,13 @@ angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
         });
       }
     } else if (method.name == 'PUT'){
-      if (uuid == 0) {
-        uuid = uuid2.newuuid();
-			}
       if (model_name.name == 'Agent') {
         var post_data = {name: model_data[0].data, phone: model_data[1].data, email: model_data[2].data};
         $http({
             url: 'http://' + API_link, 
             method: 'PUT',
-            data: post_data,
-            headers: {'nonce' : SHA1(uuid + 'PUT' + JSON.stringify(post_data) + API_link)}})
+            data: post_data
+          })
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -146,8 +139,8 @@ angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
         $http({
             url: 'http://' + API_link, 
             method: 'PUT',
-            data: post_data,
-            headers: {'nonce' : SHA1(uuid + 'PUT' + JSON.stringify(post_data) + API_link)}})
+            data: post_data
+          })
 					.success(function(data, status, headers, config) {
 	          $scope.result = data;
             $scope.method = method;
@@ -157,14 +150,11 @@ angular.module('crmStandaloneApp', ['ngPrettyJson', 'angularUUID2'])
         });
       }
     } else if (method.name == 'DELETE'){
-      if (uuid == 0) {
-        uuid = uuid2.newuuid();
-			}
-        $http({
-            url: 'http://' + API_link, 
-            method: 'DELETE',
-            data: post_data,
-            headers: {'nonce' : SHA1(uuid + 'DELETE' + API_link)}})
+      $http({
+          url: 'http://' + API_link, 
+          method: 'DELETE',
+          data: post_data
+        })
 				.success(function(data, status, headers, config) {
           $scope.result = data;
           $scope.method = method;
